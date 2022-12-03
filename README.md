@@ -1,6 +1,6 @@
 # Notify
 
-> 推送通知 SDK (钉钉群机器人、飞书群机器人、企业微信群机器人、邮件)。
+> Golang 推送通知 SDK (钉钉群机器人、飞书群机器人、企业微信群机器人、邮件)。
 
 
 ## 支持的平台
@@ -23,13 +23,15 @@ go install github.com/mohuani/notify
 
 ## 使用
 
-### 钉钉机器人
+<details>
+<summary><b>钉钉机器人</b></summary>
 
-#### 前置准备
+
+### 前置准备
 
  请先阅读一遍官方的文档 [钉钉群机器人](https://developers.dingtalk.com/document/app/custom-robot-access)，熟悉里面的各种名词概念。
 
-#### 调用
+### 调用
 
 ```go
 
@@ -54,6 +56,7 @@ go install github.com/mohuani/notify
 
 ```
 
+</details>
 
 ## 特别感谢
 
@@ -66,3 +69,6 @@ go install github.com/mohuani/notify
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
+
+
+----

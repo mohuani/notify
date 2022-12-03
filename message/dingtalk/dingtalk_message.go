@@ -1,4 +1,4 @@
-package message
+package dingtalk
 
 const (
 	TEXT        string = "text"
@@ -18,14 +18,14 @@ type Text struct {
 	Content string `json:"content"`
 }
 
-type DingTalkTextMessage struct {
+type TextMessage struct {
 	Msgtype string `json:"msgtype"`
 	At      At     `json:"at"`
 	Text    Text   `json:"text"`
 }
 
-func NewDingTalkTextMessage(at At, text Text) *DingTalkTextMessage {
-	return &DingTalkTextMessage{At: at, Text: text, Msgtype: TEXT}
+func NewTextMessage(at At, text Text) *TextMessage {
+	return &TextMessage{At: at, Text: text, Msgtype: TEXT}
 }
 
 type Link struct {
@@ -35,13 +35,13 @@ type Link struct {
 	MessageUrl string `json:"messageUrl"`
 }
 
-type DingTalkLinkMessage struct {
+type LinkMessage struct {
 	Msgtype string `json:"msgtype"`
 	Link    Link   `json:"link"`
 }
 
-func NewDingTalkLinkMessage(link Link) *DingTalkLinkMessage {
-	return &DingTalkLinkMessage{Msgtype: LINK, Link: link}
+func NewLinkMessage(link Link) *LinkMessage {
+	return &LinkMessage{Msgtype: LINK, Link: link}
 }
 
 type Markdown struct {
@@ -49,14 +49,14 @@ type Markdown struct {
 	Text  string `json:"text"`
 }
 
-type DingTalkMarkDownMessage struct {
+type MarkDownMessage struct {
 	Msgype   string   `json:"msgtype"`
 	Markdown Markdown `json:"markdown"`
 	At       At       `json:"at"`
 }
 
-func NewDingTalkMarkDownMessage(markdown Markdown, at At) *DingTalkMarkDownMessage {
-	return &DingTalkMarkDownMessage{Msgype: MARKDOWN, Markdown: markdown, At: at}
+func NewMarkDownMessage(markdown Markdown, at At) *MarkDownMessage {
+	return &MarkDownMessage{Msgype: MARKDOWN, Markdown: markdown, At: at}
 }
 
 type Btns []struct {
@@ -71,13 +71,13 @@ type ActionCard struct {
 	Btns           Btns   `json:"btns"`
 }
 
-type DingTalkActionCardMessage struct {
+type ActionCardMessage struct {
 	Msgtype    string     `json:"msgtype"`
 	ActionCard ActionCard `json:"actionCard"`
 }
 
-func NewDingTalkActionCardMessage(actionCard ActionCard) *DingTalkActionCardMessage {
-	return &DingTalkActionCardMessage{Msgtype: ACTION_CARD, ActionCard: actionCard}
+func NewActionCardMessage(actionCard ActionCard) *ActionCardMessage {
+	return &ActionCardMessage{Msgtype: ACTION_CARD, ActionCard: actionCard}
 }
 
 type Links []struct {
@@ -90,11 +90,11 @@ type FeedCard struct {
 	Links Links `json:"links"`
 }
 
-type DingTalkFeedCardMessage struct {
+type FeedCardMessage struct {
 	Msgtype  string   `json:"msgtype"`
 	FeedCard FeedCard `json:"feedCard"`
 }
 
-func NewDingTalkFeedCardMessage(feedCard FeedCard) *DingTalkFeedCardMessage {
-	return &DingTalkFeedCardMessage{Msgtype: FEED_CARD, FeedCard: feedCard}
+func NewFeedCardMessage(feedCard FeedCard) *FeedCardMessage {
+	return &FeedCardMessage{Msgtype: FEED_CARD, FeedCard: feedCard}
 }

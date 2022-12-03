@@ -1,7 +1,7 @@
-package client
+package dingtalk
 
 import (
-	"notify/message"
+	"notify/message/dingtalk"
 	"reflect"
 	"testing"
 	"time"
@@ -9,7 +9,7 @@ import (
 
 const (
 	TestAccessToken = "fec0514acf57fe7118dc9e1cd1491bee1c263396c18d90e7aab75cd72f1c4565" // 使用自己的 AccessToken
-	TestKeyWord     = "账单"                                                               // 使用自己创建自定义钉钉机器人时，安全设置里面，填写的自定义关键词
+	TestKeyWord     = "账单"                                                               // 使用自己创建自定义机器人时，安全设置里面，填写的自定义关键词
 )
 
 func TestDingTalkClient_Send(t *testing.T) {
@@ -34,14 +34,14 @@ func TestDingTalkClient_Send(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				msg: nil,
+				msg: "test end",
 			},
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dingTalkClient := &DingTalkClient{
+			dingTalkClient := &Client{
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
@@ -58,7 +58,7 @@ func TestDingTalkClient_SendActionCardMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		actionCard message.ActionCard
+		actionCard dingtalk.ActionCard
 	}
 	var tests = []struct {
 		name    string
@@ -73,11 +73,11 @@ func TestDingTalkClient_SendActionCardMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				actionCard: message.ActionCard{
+				actionCard: dingtalk.ActionCard{
 					Title:          "我 20 年前想打造一间苹果咖啡厅，而它正是 Apple Store 的前身",
 					Text:           "![screenshot](https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png) \n\n #### 乔布斯 20 年前想打造的苹果咖啡厅 \n\n Apple Store 的设计正从原来满满的科技感走向生活化，而其生活化的走向其实可以追溯到 20 年前苹果一个建立咖啡馆的计划",
 					BtnOrientation: "0",
-					Btns: message.Btns{
+					Btns: dingtalk.Btns{
 						{
 							Title:     "内容不错",
 							ActionURL: "https://www.dingtalk.com/",
@@ -94,7 +94,7 @@ func TestDingTalkClient_SendActionCardMessage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dingTalkClient := &DingTalkClient{
+			dingTalkClient := &Client{
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
@@ -111,7 +111,7 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		feedCard message.FeedCard
+		feedCard dingtalk.FeedCard
 	}
 	tests := []struct {
 		name    string
@@ -126,8 +126,8 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				feedCard: message.FeedCard{
-					Links: message.Links{
+				feedCard: dingtalk.FeedCard{
+					Links: dingtalk.Links{
 						{
 							Title:      "时代的火车向前开1",
 							MessageURL: "https://www.dingtalk.com/",
@@ -146,7 +146,7 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dingTalkClient := &DingTalkClient{
+			dingTalkClient := &Client{
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
@@ -163,7 +163,7 @@ func TestDingTalkClient_SendLinkMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		link message.Link
+		link dingtalk.Link
 	}
 	tests := []struct {
 		name    string
@@ -178,7 +178,7 @@ func TestDingTalkClient_SendLinkMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				link: message.Link{
+				link: dingtalk.Link{
 					Text:       "这个即将发布的新版本，创始人xx称它为红树林。而在此之前，每当面临重大升级，产品经理们都会取一个应景的代号，这一次，为什么是红树林",
 					Title:      "时代的火车向前开",
 					PicUrl:     "",
@@ -190,7 +190,7 @@ func TestDingTalkClient_SendLinkMessage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dingTalkClient := &DingTalkClient{
+			dingTalkClient := &Client{
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
@@ -207,8 +207,8 @@ func TestDingTalkClient_SendMarkDownMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		markdown message.Markdown
-		at       message.At
+		markdown dingtalk.Markdown
+		at       dingtalk.At
 	}
 	tests := []struct {
 		name    string
@@ -223,11 +223,11 @@ func TestDingTalkClient_SendMarkDownMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				markdown: message.Markdown{
+				markdown: dingtalk.Markdown{
 					Title: "this is a markdown message title",
 					Text:  "#### 杭州天气 \n > 9度，西北风1级，空气良89，相对温度73%\n > ![screenshot](https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png)\n > ###### 10点20分发布 [天气](https://www.dingtalk.com) \n",
 				},
-				at: message.At{
+				at: dingtalk.At{
 					AtMobiles: nil,
 					AtUserIds: nil,
 					IsAtAll:   true,
@@ -238,7 +238,7 @@ func TestDingTalkClient_SendMarkDownMessage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dingTalkClient := &DingTalkClient{
+			dingTalkClient := &Client{
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
@@ -255,8 +255,8 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		at   message.At
-		text message.Text
+		at   dingtalk.At
+		text dingtalk.Text
 	}
 	var tests = []struct {
 		name    string
@@ -271,11 +271,11 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				at: message.At{
+				at: dingtalk.At{
 					AtMobiles: []string{"13598055910"},
 					IsAtAll:   false,
 				},
-				text: message.Text{
+				text: dingtalk.Text{
 					Content: "this is a test text message" + time.Now().String(),
 				},
 			},
@@ -288,10 +288,10 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				at: message.At{
+				at: dingtalk.At{
 					IsAtAll: true,
 				},
-				text: message.Text{
+				text: dingtalk.Text{
 					Content: "this is a test text message" + time.Now().String(),
 				},
 			},
@@ -300,7 +300,7 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dingTalkClient := &DingTalkClient{
+			dingTalkClient := &Client{
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
@@ -319,10 +319,10 @@ func TestNewDingTalkClient(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *DingTalkClient
+		want *Client
 	}{
 		{
-			name: "111",
+			name: "NewDingTalkClient",
 			args: args{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
