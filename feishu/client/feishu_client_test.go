@@ -1,7 +1,7 @@
-package feishu
+package client
 
 import (
-	"github.com/mohuani/notify/message/feishu"
+	"github.com/mohuani/notify/feishu/message"
 	"reflect"
 	"testing"
 	"time"
@@ -125,7 +125,7 @@ func TestClient_SendPostMessage(t *testing.T) {
 	}
 	type args struct {
 		title   string
-		content [][]feishu.PostMessageContentPostZhCnContent
+		content [][]message.PostMessageContentPostZhCnContent
 	}
 	tests := []struct {
 		name    string
@@ -141,7 +141,7 @@ func TestClient_SendPostMessage(t *testing.T) {
 			},
 			args: args{
 				title:   "我是一个标题",
-				content: [][]feishu.PostMessageContentPostZhCnContent{},
+				content: [][]message.PostMessageContentPostZhCnContent{},
 			},
 			wantErr: false,
 		},

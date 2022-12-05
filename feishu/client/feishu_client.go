@@ -1,10 +1,10 @@
-package feishu
+package client
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/mohuani/notify/message/feishu"
+	"github.com/mohuani/notify/feishu/message"
 	"io"
 	"net/http"
 	"strings"
@@ -29,11 +29,11 @@ const (
 func (client *Client) Send(msg any) error {
 	url := Webhook + client.token
 
-	message, err := json.Marshal(msg)
+	messageContent, err := json.Marshal(msg)
 	if err != nil {
 		return err
 	}
-	payload := strings.NewReader(string(message))
+	payload := strings.NewReader(string(messageContent))
 	request, err := http.NewRequest(http.MethodPost, url, payload)
 	if err != nil {
 		return err
@@ -55,7 +55,7 @@ func (client *Client) Send(msg any) error {
 	}
 
 	if response.StatusCode != http.StatusOK {
-		errMessageResponse := &feishu.ErrMessageResponse{}
+		errMessageResponse := &message.ErrMessageResponse{}
 		err := json.Unmarshal(body, errMessageResponse)
 		if err != nil {
 			return err
@@ -68,23 +68,23 @@ func (client *Client) Send(msg any) error {
 
 func (client *Client) SendTextMessage(text string) error {
 	text = text + client.keyWork
-	message := feishu.NewTextMessage(text)
+	message := message.NewTextMessage(text)
 	return client.Send(message)
 }
 
-func (client *Client) SendPostMessage(title string, content [][]feishu.PostMessageContentPostZhCnContent) error {
+func (client *Client) SendPostMessage(title string, content [][]message.PostMessageContentPostZhCnContent) error {
 	title = title + client.keyWork
-	message := feishu.NewPostMessage(title, content)
+	message := message.NewPostMessage(title, content)
 	return client.Send(message)
 }
 
 func (client *Client) SendImageMessage(imageKey string) error {
-	message := feishu.NewImageMessage(imageKey)
+	message := message.NewImageMessage(imageKey)
 	return client.Send(message)
 }
 
 func (client *Client) SendShareChatMessage(shareChatId string) error {
-	message := feishu.NewShareChatMessage(shareChatId)
+	message := message.NewShareChatMessage(shareChatId)
 	return client.Send(message)
 }
 

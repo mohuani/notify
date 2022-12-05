@@ -1,4 +1,4 @@
-package feishu
+package message
 
 const (
 	TEXT        string = "text"

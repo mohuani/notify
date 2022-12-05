@@ -1,10 +1,10 @@
-package dingtalk
+package client
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/mohuani/notify/message/dingtalk"
+	"github.com/mohuani/notify/dingtalk/message"
 	"io"
 	"net/http"
 	"strings"
@@ -29,12 +29,12 @@ func NewDingTalkClient(token string, keyWork string) *Client {
 func (client *Client) Send(msg any) error {
 	url := Webhook + "?access_token=" + client.token
 
-	message, err := json.Marshal(msg)
+	messageContent, err := json.Marshal(msg)
 	if err != nil {
 		return err
 	}
 
-	payload := strings.NewReader(string(message))
+	payload := strings.NewReader(string(messageContent))
 
 	httpClient := &http.Client{}
 	request, err := http.NewRequest(http.MethodPost, url, payload)
@@ -58,7 +58,7 @@ func (client *Client) Send(msg any) error {
 		return err
 	}
 
-	messageResponse := &dingtalk.MessageResponse{}
+	messageResponse := &message.MessageResponse{}
 	err = json.Unmarshal(body, messageResponse)
 	if err != nil {
 		return err
@@ -71,35 +71,35 @@ func (client *Client) Send(msg any) error {
 	return nil
 }
 
-func (client *Client) SendTextMessage(at dingtalk.At, text dingtalk.Text) error {
+func (client *Client) SendTextMessage(at message.At, text message.Text) error {
 	text.Content = text.Content + client.keyWork
-	textMessage := dingtalk.NewTextMessage(at, text)
+	textMessage := message.NewTextMessage(at, text)
 	return client.Send(textMessage)
 }
 
-func (client *Client) SendMarkDownMessage(markdown dingtalk.Markdown, at dingtalk.At) error {
+func (client *Client) SendMarkDownMessage(markdown message.Markdown, at message.At) error {
 	markdown.Title = markdown.Title + client.keyWork
-	markDownMessage := dingtalk.NewMarkDownMessage(markdown, at)
+	markDownMessage := message.NewMarkDownMessage(markdown, at)
 	return client.Send(markDownMessage)
 }
 
-func (client *Client) SendLinkMessage(link dingtalk.Link) error {
+func (client *Client) SendLinkMessage(link message.Link) error {
 	link.Title = link.Title + client.keyWork
-	linkMessage := dingtalk.NewLinkMessage(link)
+	linkMessage := message.NewLinkMessage(link)
 	return client.Send(linkMessage)
 }
 
-func (client *Client) SendActionCardMessage(actionCard dingtalk.ActionCard) error {
+func (client *Client) SendActionCardMessage(actionCard message.ActionCard) error {
 	actionCard.Title = actionCard.Title + client.keyWork
-	actionCardMessage := dingtalk.NewActionCardMessage(actionCard)
+	actionCardMessage := message.NewActionCardMessage(actionCard)
 	return client.Send(actionCardMessage)
 }
 
-func (client *Client) SendFeedCardMessage(feedCard dingtalk.FeedCard) error {
+func (client *Client) SendFeedCardMessage(feedCard message.FeedCard) error {
 	for i, link := range feedCard.Links {
 		feedCard.Links[i].Title = link.Title + client.keyWork
 	}
 
-	feedCardMessage := dingtalk.NewFeedCardMessage(feedCard)
+	feedCardMessage := message.NewFeedCardMessage(feedCard)
 	return client.Send(feedCardMessage)
 }

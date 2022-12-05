@@ -1,7 +1,7 @@
-package dingtalk
+package client
 
 import (
-	"github.com/mohuani/notify/message/dingtalk"
+	"github.com/mohuani/notify/dingtalk/message"
 	"reflect"
 	"testing"
 	"time"
@@ -57,7 +57,7 @@ func TestDingTalkClient_SendActionCardMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		actionCard dingtalk.ActionCard
+		actionCard message.ActionCard
 	}
 	var tests = []struct {
 		name    string
@@ -72,11 +72,11 @@ func TestDingTalkClient_SendActionCardMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				actionCard: dingtalk.ActionCard{
+				actionCard: message.ActionCard{
 					Title:          "我 20 年前想打造一间苹果咖啡厅，而它正是 Apple Store 的前身",
 					Text:           "![screenshot](https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png) \n\n #### 乔布斯 20 年前想打造的苹果咖啡厅 \n\n Apple Store 的设计正从原来满满的科技感走向生活化，而其生活化的走向其实可以追溯到 20 年前苹果一个建立咖啡馆的计划",
 					BtnOrientation: "0",
-					Btns: dingtalk.Btns{
+					Btns: message.Btns{
 						{
 							Title:     "内容不错",
 							ActionURL: "https://www.dingtalk.com/",
@@ -110,7 +110,7 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		feedCard dingtalk.FeedCard
+		feedCard message.FeedCard
 	}
 	tests := []struct {
 		name    string
@@ -125,8 +125,8 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				feedCard: dingtalk.FeedCard{
-					Links: dingtalk.Links{
+				feedCard: message.FeedCard{
+					Links: message.Links{
 						{
 							Title:      "时代的火车向前开1",
 							MessageURL: "https://www.dingtalk.com/",
@@ -162,7 +162,7 @@ func TestDingTalkClient_SendLinkMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		link dingtalk.Link
+		link message.Link
 	}
 	tests := []struct {
 		name    string
@@ -177,7 +177,7 @@ func TestDingTalkClient_SendLinkMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				link: dingtalk.Link{
+				link: message.Link{
 					Text:       "这个即将发布的新版本，创始人xx称它为红树林。而在此之前，每当面临重大升级，产品经理们都会取一个应景的代号，这一次，为什么是红树林",
 					Title:      "时代的火车向前开",
 					PicUrl:     "",
@@ -206,8 +206,8 @@ func TestDingTalkClient_SendMarkDownMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		markdown dingtalk.Markdown
-		at       dingtalk.At
+		markdown message.Markdown
+		at       message.At
 	}
 	tests := []struct {
 		name    string
@@ -222,11 +222,11 @@ func TestDingTalkClient_SendMarkDownMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				markdown: dingtalk.Markdown{
+				markdown: message.Markdown{
 					Title: "this is a markdown message title",
 					Text:  "#### 杭州天气 \n > 9度，西北风1级，空气良89，相对温度73%\n > ![screenshot](https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png)\n > ###### 10点20分发布 [天气](https://www.dingtalk.com) \n",
 				},
-				at: dingtalk.At{
+				at: message.At{
 					AtMobiles: nil,
 					AtUserIds: nil,
 					IsAtAll:   true,
@@ -254,8 +254,8 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		at   dingtalk.At
-		text dingtalk.Text
+		at   message.At
+		text message.Text
 	}
 	var tests = []struct {
 		name    string
@@ -270,11 +270,11 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				at: dingtalk.At{
+				at: message.At{
 					AtMobiles: []string{"13598055910"},
 					IsAtAll:   false,
 				},
-				text: dingtalk.Text{
+				text: message.Text{
 					Content: "this is a test text message" + time.Now().String(),
 				},
 			},
@@ -287,10 +287,10 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				at: dingtalk.At{
+				at: message.At{
 					IsAtAll: true,
 				},
-				text: dingtalk.Text{
+				text: message.Text{
 					Content: "this is a test text message" + time.Now().String(),
 				},
 			},

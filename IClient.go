@@ -1,4 +1,4 @@
-package client
+package notify
 
 type Client struct {
 	token   string

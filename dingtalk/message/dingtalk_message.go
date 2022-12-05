@@ -1,4 +1,4 @@
-package dingtalk
+package message
 
 const (
 	TEXT        string = "text"

@@ -1,4 +1,4 @@
-package dingtalk
+package message
 
 type MessageResponse struct {
 	ErrCode int    `json:"errcode"`
