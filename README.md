@@ -17,7 +17,7 @@
 
 ### 引入本包
 ```shell
-go install github.com/mohuani/notify
+go get -u github.com/mohuani/notify
 ```
 
 
