@@ -1,7 +1,7 @@
 package feishu
 
 import (
-	"notify/message/feishu"
+	"github.com/mohuani/notify/message/feishu"
 	"reflect"
 	"testing"
 	"time"
@@ -12,7 +12,7 @@ const (
 	TestKeyWord     = "监控报警"                                 // 使用自己创建自定义机器人时，安全设置里面，填写的自定义关键词
 )
 
-func TestClient_Send(t *testing.T) {
+func TestClient_send(t *testing.T) {
 	type fields struct {
 		token   string
 		keyWork string
@@ -26,15 +26,14 @@ func TestClient_Send(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
 		{
-			name: "Send",
+			name: "send",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				msg: "新更新提醒" + time.Now().String(),
+				msg: "{\"msg_type\":\"text\",\"content\":{\"text\":\"新更新提醒，监控报警\"}}",
 			},
 			wantErr: false,
 		},
@@ -46,7 +45,7 @@ func TestClient_Send(t *testing.T) {
 				keyWork: tt.fields.keyWork,
 			}
 			if err := client.Send(tt.args.msg); (err != nil) != tt.wantErr {
-				t.Errorf("Send() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("send() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

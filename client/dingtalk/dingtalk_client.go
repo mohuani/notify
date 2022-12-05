@@ -2,10 +2,11 @@ package dingtalk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/mohuani/notify/message/dingtalk"
 	"io"
 	"net/http"
-	"notify/message/dingtalk"
 	"strings"
 )
 
@@ -56,7 +57,16 @@ func (client *Client) Send(msg any) error {
 		fmt.Println(err)
 		return err
 	}
-	fmt.Println(string(body))
+
+	messageResponse := &dingtalk.MessageResponse{}
+	err = json.Unmarshal(body, messageResponse)
+	if err != nil {
+		return err
+	}
+	if messageResponse.ErrCode != 0 {
+		_ = fmt.Errorf("messageResponse error %v", messageResponse)
+		return errors.New(messageResponse.ErrMsg)
+	}
 
 	return nil
 }

@@ -1,7 +1,7 @@
 package dingtalk
 
 import (
-	"notify/message/dingtalk"
+	"github.com/mohuani/notify/message/dingtalk"
 	"reflect"
 	"testing"
 	"time"
@@ -26,7 +26,6 @@ func TestDingTalkClient_Send(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
 		{
 			name: "Send",
 			fields: fields{
@@ -34,7 +33,7 @@ func TestDingTalkClient_Send(t *testing.T) {
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				msg: "test end",
+				msg: "{\"text\":{\"content\":\"我就是我,是不一样的烟火，账单\"},\"msgtype\":\"text\"}",
 			},
 			wantErr: false,
 		},

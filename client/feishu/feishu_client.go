@@ -2,10 +2,11 @@ package feishu
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/mohuani/notify/message/feishu"
 	"io"
 	"net/http"
-	"notify/message/feishu"
 	"strings"
 )
 
@@ -53,7 +54,14 @@ func (client *Client) Send(msg any) error {
 		return err
 	}
 
-	fmt.Println(string(body))
+	if response.StatusCode != http.StatusOK {
+		errMessageResponse := &feishu.ErrMessageResponse{}
+		err := json.Unmarshal(body, errMessageResponse)
+		if err != nil {
+			return err
+		}
+		return errors.New(errMessageResponse.Msg)
+	}
 
 	return nil
 }
