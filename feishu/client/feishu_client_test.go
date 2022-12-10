@@ -27,13 +27,13 @@ func TestClient_send(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "send",
+			name: "FeiShuClient_send",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				msg: "{\"msg_type\":\"text\",\"content\":{\"text\":\"新更新提醒，监控报警\"}}",
+				msg: message.NewTextMessage("新更新提醒，监控报警" + time.Now().String()),
 			},
 			wantErr: false,
 		},
@@ -62,7 +62,7 @@ func TestNewFeiShuClient(t *testing.T) {
 		want *Client
 	}{
 		{
-			name: "NewFeiShuClient",
+			name: "FeiShuClient_NewFeiShuClient",
 			args: args{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -94,7 +94,7 @@ func TestClient_SendTextMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendTextMessage",
+			name: "FeiShuClient_SendTextMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -134,7 +134,7 @@ func TestClient_SendPostMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendPostMessage",
+			name: "FeiShuClient_SendPostMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -174,7 +174,7 @@ func TestClient_SendImageMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "",
+			name: "FeiShuClient_SendImageMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -213,7 +213,7 @@ func TestClient_SendShareChatMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendShareChatMessage",
+			name: "FeiShuClient_SendShareChatMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,

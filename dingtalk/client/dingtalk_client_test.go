@@ -27,13 +27,13 @@ func TestDingTalkClient_Send(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "Send",
+			name: "DingTalkClient_Send",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				msg: "{\"text\":{\"content\":\"我就是我,是不一样的烟火，账单\"},\"msgtype\":\"text\"}",
+				msg: message.NewTextMessage("我就是我,是不一样的烟火，账单", message.At{}),
 			},
 			wantErr: false,
 		},
@@ -66,7 +66,7 @@ func TestDingTalkClient_SendActionCardMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendActionCardMessage",
+			name: "DingTalkClient_SendActionCardMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -110,7 +110,7 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		feedCard message.FeedCard
+		links []message.FeedCardLink
 	}
 	tests := []struct {
 		name    string
@@ -119,24 +119,22 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendFeedCardMessage",
+			name: "DingTalkClient_SendFeedCardMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
 			},
 			args: args{
-				feedCard: message.FeedCard{
-					Links: message.Links{
-						{
-							Title:      "时代的火车向前开1",
-							MessageURL: "https://www.dingtalk.com/",
-							PicURL:     "https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png",
-						},
-						{
-							Title:      "时代的火车向前开2",
-							MessageURL: "https://www.dingtalk.com/",
-							PicURL:     "https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png",
-						},
+				links: []message.FeedCardLink{
+					{
+						Title:      "时代的火车向前开1",
+						MessageURL: "https://www.dingtalk.com/",
+						PicURL:     "https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png",
+					},
+					{
+						Title:      "时代的火车向前开2",
+						MessageURL: "https://www.dingtalk.com/",
+						PicURL:     "https://img.alicdn.com/tfs/TB1NwmBEL9TBuNjy1zbXXXpepXa-2400-1218.png",
 					},
 				},
 			},
@@ -149,7 +147,7 @@ func TestDingTalkClient_SendFeedCardMessage(t *testing.T) {
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
-			if err := dingTalkClient.SendFeedCardMessage(tt.args.feedCard); (err != nil) != tt.wantErr {
+			if err := dingTalkClient.SendFeedCardMessage(tt.args.links); (err != nil) != tt.wantErr {
 				t.Errorf("SendFeedCardMessage() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -171,7 +169,7 @@ func TestDingTalkClient_SendLinkMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendLinkMessage",
+			name: "DingTalkClient_SendLinkMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -216,7 +214,7 @@ func TestDingTalkClient_SendMarkDownMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendMarkDownMessage",
+			name: "DingTalkClient_SendMarkDownMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -254,8 +252,8 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 		keyWork string
 	}
 	type args struct {
-		at   message.At
-		text message.Text
+		at      message.At
+		content string
 	}
 	var tests = []struct {
 		name    string
@@ -264,7 +262,7 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "SendTextMessage",
+			name: "DingTalkClient_SendTextMessage",
 			fields: fields{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,
@@ -273,9 +271,6 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 				at: message.At{
 					AtMobiles: []string{"13598055910"},
 					IsAtAll:   false,
-				},
-				text: message.Text{
-					Content: "this is a test text message" + time.Now().String(),
 				},
 			},
 			wantErr: false,
@@ -290,9 +285,7 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 				at: message.At{
 					IsAtAll: true,
 				},
-				text: message.Text{
-					Content: "this is a test text message" + time.Now().String(),
-				},
+				content: "this is a test text message" + time.Now().String(),
 			},
 			wantErr: false,
 		},
@@ -303,7 +296,7 @@ func TestDingTalkClient_SendTextMessage(t *testing.T) {
 				token:   tt.fields.token,
 				keyWork: tt.fields.keyWork,
 			}
-			if err := dingTalkClient.SendTextMessage(tt.args.at, tt.args.text); (err != nil) != tt.wantErr {
+			if err := dingTalkClient.SendTextMessage(tt.args.content, tt.args.at); (err != nil) != tt.wantErr {
 				t.Errorf("SendTextMessage() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -321,7 +314,7 @@ func TestNewDingTalkClient(t *testing.T) {
 		want *Client
 	}{
 		{
-			name: "NewDingTalkClient",
+			name: "DingTalkClient_NewDingTalkClient",
 			args: args{
 				token:   TestAccessToken,
 				keyWork: TestKeyWord,

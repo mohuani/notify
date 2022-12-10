@@ -71,9 +71,9 @@ func (client *Client) Send(msg any) error {
 	return nil
 }
 
-func (client *Client) SendTextMessage(at message.At, text message.Text) error {
-	text.Content = text.Content + client.keyWork
-	textMessage := message.NewTextMessage(at, text)
+func (client *Client) SendTextMessage(content string, at message.At) error {
+	content = content + client.keyWork
+	textMessage := message.NewTextMessage(content, at)
 	return client.Send(textMessage)
 }
 
@@ -95,11 +95,11 @@ func (client *Client) SendActionCardMessage(actionCard message.ActionCard) error
 	return client.Send(actionCardMessage)
 }
 
-func (client *Client) SendFeedCardMessage(feedCard message.FeedCard) error {
-	for i, link := range feedCard.Links {
-		feedCard.Links[i].Title = link.Title + client.keyWork
+func (client *Client) SendFeedCardMessage(links []message.FeedCardLink) error {
+	for i, link := range links {
+		links[i].Title = link.Title + client.keyWork
 	}
 
-	feedCardMessage := message.NewFeedCardMessage(feedCard)
+	feedCardMessage := message.NewFeedCardMessage(links)
 	return client.Send(feedCardMessage)
 }
